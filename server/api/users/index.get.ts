@@ -1,4 +1,4 @@
-import { users } from "../../models";
+import { users } from "@/server/models";
 
 export default defineEventHandler(async (event) => {
   try {

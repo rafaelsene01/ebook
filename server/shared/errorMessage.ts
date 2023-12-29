@@ -1,5 +1,3 @@
-export * from './auth'
-
 export const ErrorMessage: any = {
   INVALID_TOKEN: {
     statusCode: 401,

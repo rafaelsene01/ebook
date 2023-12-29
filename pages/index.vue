@@ -1,47 +1,37 @@
-<script setup>
-// https://medium.com/@flanker72/nuxt3-complex-solutions-database-integration-8df941f0fb82
+<script setup lang="ts">
+definePageMeta({ auth: false });
 
-const addUser = async () => {
-  const { body } = await $fetch("api/users", {
-    method: "post",
-    body: {
-      email: "AAA@g.com",
-      password: "xxsds5198fg",
-      name: "Sene Teste",
-    },
-    headers: {
-      Authorization: "Bearer <token>",
-    },
-  });
-};
+const { status, data, signIn, signOut } = useAuth();
 
-// const addUser = async () => {
-//   const { body } = await $fetch("api/login", {
-//     method: "post",
-//     body: {
-//       email: "AAA@g.com",
-//       password: "xxsds5198fg",
-//     },
-//   });
-// };
+const loggedIn = computed(() => status.value === "authenticated");
 
-const items = [
-  {
-    title: "Item #1",
-  },
-  {
-    title: "Item #2",
-  },
-  {
-    title: "Item #3",
-  },
-];
+async function handleSignIn() {
+  await signIn("github");
+}
+
+const headers = useRequestHeaders(["cookie"]) as HeadersInit;
+const { data: token } = await useFetch("/api/token", { headers });
+
+// FIXME: Continuar a integração
+// https://www.youtube.com/watch?v=voQcJ-pO1ms
+async function handleSignOut() {
+  await signOut();
+}
 </script>
+
 <template>
-  <div class="mx-auto my-auto">
-    <v-btn @click="addUser" class="mb-4">Add new user</v-btn>
-    <v-card max-width="500">
-      <v-list :items="items"></v-list>
-    </v-card>
+  <div>
+    <button v-if="loggedIn" @click="handleSignOut">Sign Out</button>
+    <button v-else @click="handleSignIn">Sign In</button>
   </div>
+  <div>
+    {{ loggedIn }}
+  </div>
+  <div>
+    {{ data }}
+  </div>
+  <div>
+    {{ status }}
+  </div>
+  <pre>{{ token || "no token present, are you logged in?" }}</pre>
 </template>

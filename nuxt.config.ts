@@ -13,7 +13,8 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({ autoImport: true }))
       })
     },
-    "nuxt-server-utils"
+    'nuxt-server-utils',
+    '@sidebase/nuxt-auth',
   ],
   vite: {
     vue: {
@@ -30,5 +31,16 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     JWT_SECRET: process.env.JWT_SECRET,
+    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    public: {
+      GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+      GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    },
   },
+  auth: {
+    globalAppMiddleware: {
+      isEnabled: true
+    },
+  }
 })

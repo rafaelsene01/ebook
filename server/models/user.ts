@@ -1,17 +1,30 @@
 import { Schema, model, InferSchemaType } from "mongoose";
 import { z } from "zod";
-import bcrypt from "mongoose-bcrypt";
+import { v4 as uuidv4 } from 'uuid';
+
+export const LoginSchema = z.object({
+  name: z.string().trim().min(4).max(255).optional(),
+  email: z.string().trim().email(),
+  password: z.string().min(8).max(255),
+});
+
+export type LoginType = {
+  name: string | null,
+  email: string,
+  password: string,
+}
 
 export const UserSchema = z.object({
   name: z.string().min(3).max(255),
   email: z.string().email(),
-  password: z.string().min(8).max(255),
+  password: z.string().min(8).max(255).optional(),
 });
 
 export const schema = new Schema(
   {
+    _id: { type: String, default: () => uuidv4() },
     email: { type: String, unique: true },
-    password: { type: String, bcrypt: true },
+    password: { type: String || null, default: null },
     name: String,
   },
   { timestamps: true, strict: true, strictQuery: true, versionKey: false }
@@ -19,6 +32,5 @@ export const schema = new Schema(
 
 export type UserType = InferSchemaType<typeof schema>;
 
-schema.plugin(bcrypt);
 
 export const users = model<UserType>("User", schema, "user");

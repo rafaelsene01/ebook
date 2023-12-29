@@ -1,13 +1,9 @@
-import { users, UserType, UserSchema } from "../../models";
-import { validAuth, ErrorMessage } from '../../middlewares'
+import { users, UserType, UserSchema } from "@/server/models";
 import { Validator } from "#nuxt-server-utils";
+import { ErrorMessage } from "@/server/shared";
 
 export default defineEventHandler(async (event) => {
-
-
   try {
-    await validAuth(event)
-
     const { email, password, name } = await readBody<UserType>(event);
     Validator.validateSchema(UserSchema, { email, password, name });
 
