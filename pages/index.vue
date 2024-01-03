@@ -1,37 +1,19 @@
 <script setup lang="ts">
 definePageMeta({ auth: false });
 
-const { status, data, signIn, signOut } = useAuth();
-
-const loggedIn = computed(() => status.value === "authenticated");
-
-async function handleSignIn() {
-  await signIn("github");
-}
-
 const headers = useRequestHeaders(["cookie"]) as HeadersInit;
 const { data: token } = await useFetch("/api/token", { headers });
-
-// FIXME: Continuar a integração
-// https://www.youtube.com/watch?v=voQcJ-pO1ms
-async function handleSignOut() {
-  await signOut();
-}
 </script>
 
 <template>
-  <div>
-    <button v-if="loggedIn" @click="handleSignOut">Sign Out</button>
-    <button v-else @click="handleSignIn">Sign In</button>
+  <div class="border pa-4 mb-4 bg-yellow">
+    <pre>{{ token || "Usuario não logado" }}</pre>
   </div>
-  <div>
-    {{ loggedIn }}
+  <div class="border pa-4 mb-2 bg-blue-accent-1">
+    <h5 class="text-h5">Comentários</h5>
   </div>
-  <div>
-    {{ data }}
+  <div class="border pa-4 mb-2 bg-blue-accent-1">
+    <h6 class="text-h6">Usuário:</h6>
+    <pre>{{ token || "Usuario não logado" }}</pre>
   </div>
-  <div>
-    {{ status }}
-  </div>
-  <pre>{{ token || "no token present, are you logged in?" }}</pre>
 </template>

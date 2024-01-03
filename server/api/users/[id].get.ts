@@ -1,8 +1,9 @@
 import { users } from "@/server/models";
-import { getToken } from '#auth'
 
 export default defineEventHandler(async (event) => {
-  const { sub: userId } = await getToken({ event })
+  // BUGFIX: Violação de segurança
+  // BUGFIX: Rota retorna qualquer usuario caso encontre o ID.
+  const userId = getRouterParam(event, 'id')
   try {
     const usersData = await users.findOne({ _id: userId });
     return usersData

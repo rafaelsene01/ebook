@@ -1,3 +1,9 @@
+<script setup lang="ts">
+const headers = useRequestHeaders(["cookie"]) as HeadersInit;
+const { data: token } = await useFetch("/api/users", { headers });
+</script>
 <template>
-  <h1>Usuario</h1>
+  <div class="mx-auto my-auto border rounded pa-4">
+    <pre>{{ token }}</pre>
+  </div>
 </template>

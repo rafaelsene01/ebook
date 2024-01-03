@@ -1,3 +1,10 @@
+<script setup lang="ts">
+const route = useRoute();
+const { data: token } = await useFetch(`/api/users/${route.params.id}`);
+</script>
+
 <template>
-  <h1>Usuario 1</h1>
+  <div class="mx-auto my-auto border rounded pa-4">
+    <pre>{{ token }}</pre>
+  </div>
 </template>
