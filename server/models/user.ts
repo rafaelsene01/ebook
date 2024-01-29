@@ -3,9 +3,8 @@ import { z } from "zod";
 import { v4 as uuidv4 } from 'uuid';
 
 export const LoginSchema = z.object({
-  name: z.string().trim().min(4).max(255).optional(),
   email: z.string().trim().email(),
-  password: z.string().min(8).max(255),
+  password: z.string().trim().min(8).max(255),
 });
 
 export type LoginType = {
@@ -15,9 +14,9 @@ export type LoginType = {
 }
 
 export const UserSchema = z.object({
-  name: z.string().min(3).max(255),
-  email: z.string().email(),
-  password: z.string().min(8).max(255).optional(),
+  name: z.string().trim().min(4).max(255),
+  email: z.string().trim().email(),
+  password: z.string().trim().min(8).max(255),
 });
 
 export const schema = new Schema(

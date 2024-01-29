@@ -13,5 +13,10 @@ export const ErrorMessage: any = {
     statusCode: 400,
     code: "USER_NOT_EXISTS",
     message: "No such user exists.",
+  },
+  INVALID_CREDENTIALS: {
+    statusCode: 400,
+    code: "INVALID_CREDENTIALS",
+    message: "Invalid credentials.",
   }
 }

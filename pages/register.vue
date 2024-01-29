@@ -13,10 +13,12 @@ const name = ref("");
 const email = ref("");
 const password = ref("");
 const errorMessage = ref("");
+const loading = ref(false);
 
 const register = async () => {
   errorMessage.value = "";
   if (!(await registerForm.value.validate()).valid) return;
+  loading.value = true;
 
   const payload = {
     name: name.value,
@@ -28,7 +30,6 @@ const register = async () => {
     method: "POST",
     body: payload,
   });
-  console.log(error.value);
   if (error.value) {
     errorMessage.value = error.value.data.message;
   } else
@@ -37,6 +38,8 @@ const register = async () => {
       email: email.value,
       password: password.value,
     });
+
+  loading.value = false;
 };
 </script>
 
@@ -89,6 +92,7 @@ const register = async () => {
         type="submit"
         class="my-2 text-none font-weight-bold bg-green"
         block
+        :loading="loading"
       >
         Logar
       </v-btn>

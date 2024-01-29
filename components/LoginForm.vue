@@ -3,13 +3,33 @@ const { signIn } = useAuth();
 
 const email = ref("");
 const password = ref("");
+const loading = ref(false);
+
+const login = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  loading.value = true;
+
+  try {
+    const data = await $fetch("/api/login", {
+      method: "POST",
+      body: { email, password },
+    });
+    signIn("credentials", data);
+  } catch (error) {
+    // TOAST AQUi
+  }
+
+  loading.value = false;
+};
 </script>
 
 <template>
-  <v-form
-    @submit.prevent="signIn('credentials', { email, password })"
-    class="py-2"
-  >
+  <v-form @submit.prevent="login({ email, password })" class="py-2">
     <v-text-field
       density="compact"
       variant="outlined"
@@ -35,7 +55,12 @@ const password = ref("");
     <div class="d-flex justify-end">
       <a href="#"> Esqueci a senha? </a>
     </div>
-    <v-btn type="submit" class="my-4 text-none font-weight-bold bg-green" block>
+    <v-btn
+      type="submit"
+      class="my-4 text-none font-weight-bold bg-green"
+      block
+      :loading="loading"
+    >
       Logar
     </v-btn>
     <p>

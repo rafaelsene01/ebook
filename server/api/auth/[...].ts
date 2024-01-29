@@ -3,7 +3,7 @@ import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-import { users, LoginSchema, LoginType } from '@/server/models'
+import { users, LoginSchema, UserType } from '@/server/models'
 import { Validator } from "#nuxt-server-utils";
 import bcrypt from "bcrypt";
 
@@ -26,24 +26,14 @@ export default NuxtAuthHandler({
     // @ts-expect-error You need to use .default here for it to work during SSR. May be fixed via Vite at some point
     CredentialsProvider.default({
       name: 'Credentials',
-      async authorize(credentials: LoginType) {
-        try {
-          Validator.validateSchema(LoginSchema, credentials);
-          const user = await users.findOne({
-            email: credentials.email,
-          });
-          if (user) {
-            return await bcrypt.compare(credentials.password, user.password) ? user : null
-          }
-          return
-        } catch (error) {
-          return
-        }
+      async authorize(credentials: any) {
+        return credentials
       },
     }),
   ],
   callbacks: {
     async signIn({ user, credentials }) {
+      // console.log("1")
       if (credentials) return true
       if (user) {
         try {
@@ -64,12 +54,15 @@ export default NuxtAuthHandler({
       return baseUrl
     },
     async session({ session, token }) {
+      // console.log("3")
       if (token) {
-        session.id = token.sub
+        // Adicionando o _id do cliente, visivel no middleware da api
+        session._id = token.sub
       }
       return session
     },
     async jwt({ token, user }) {
+      // console.log("2")
       if (user) {
         const userDB = await users.findOne({
           email: user.email,

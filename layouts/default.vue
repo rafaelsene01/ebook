@@ -17,7 +17,7 @@ async function handleSignOut() {
   <v-app>
     <v-app-bar>
       <v-btn class="text-h5 mr-4" to="/"> Dashboard </v-btn>
-      <v-btn v-if="loggedIn" class="text-h5 mr-4" to="/">
+      <v-btn v-if="loggedIn" class="text-h5 mr-4" to="/posts">
         Meus comentários
       </v-btn>
       <v-btn v-if="loggedIn" class="text-h5" to="/user"> Meu registro </v-btn>

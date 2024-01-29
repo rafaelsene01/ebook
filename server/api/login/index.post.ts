@@ -1,20 +1,22 @@
-import { users, UserSchema, UserType } from "@/server/models";
+import { users, LoginSchema, UserType } from "@/server/models";
 import { Validator, } from "#nuxt-server-utils";
 import { ErrorMessage } from "@/server/shared";
 import bcrypt from "bcrypt";
 
 export default defineEventHandler(async (event) => {
   try {
-    const { email, password, name } = await readBody<UserType>(event);
-    Validator.validateSchema(UserSchema, { email, password, name });
+    const { email, password: passwordInput } = await readBody<UserType>(event);
+    Validator.validateSchema(LoginSchema, { email, password: passwordInput });
 
     const userData = await users.findOne({
       email,
     });
-    if (userData) {
-      throw new Error("USER_EXISTS");
+    if (!userData) {
+      throw new Error("USER_NOT_EXISTS");
     } else {
-      await users.create({ email, password: await bcrypt.hash(password, 10), name });
+      const { _id, name, email, password } = userData
+      if (!password || !(await bcrypt.compare(passwordInput, password))) throw new Error("INVALID_CREDENTIALS");
+      return { _id, name, email, }
     }
   } catch (err) {
     const { cause }: any = err
