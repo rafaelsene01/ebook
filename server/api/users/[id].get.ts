@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   // BUGFIX: Rota retorna qualquer usuario caso encontre o ID.
   const userId = getRouterParam(event, 'id')
   try {
-    const usersData = await users.findOne({ _id: userId });
+    const usersData = await users.findOne({ _id: userId }).select("-password");
     return usersData
   } catch (err) {
     event.node.res.statusCode = 500;

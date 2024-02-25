@@ -25,6 +25,7 @@
   "dependencies": {
     "@mdi/font": "^7.3.67",
     "bcrypt": "^5.1.1",
+    "lorem-ipsum": "^2.0.8",
     "nuxt-server-utils": "^0.0.7",
     "uuid": "^9.0.1",
     "zod": "^3.22.4"

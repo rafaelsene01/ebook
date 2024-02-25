@@ -1,12 +1,12 @@
-import { users, LoginSchema, UserType } from "@/server/models";
-import { Validator, } from "#nuxt-server-utils";
+import { users, LoginValidator, UserSchema } from "@/server/models";
+import { Validator } from "#nuxt-server-utils";
 import { ErrorMessage } from "@/server/shared";
 import bcrypt from "bcrypt";
 
 export default defineEventHandler(async (event) => {
   try {
-    const { email, password: passwordInput } = await readBody<UserType>(event);
-    Validator.validateSchema(LoginSchema, { email, password: passwordInput });
+    const { email, password: passwordInput } = await readBody<UserSchema>(event);
+    Validator.validateSchema(LoginValidator, { email, password: passwordInput });
 
     const userData = await users.findOne({
       email,

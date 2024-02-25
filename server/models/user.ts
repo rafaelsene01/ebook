@@ -2,7 +2,7 @@ import { Schema, model, InferSchemaType } from "mongoose";
 import { z } from "zod";
 import { v4 as uuidv4 } from 'uuid';
 
-export const LoginSchema = z.object({
+export const LoginValidator = z.object({
   email: z.string().trim().email(),
   password: z.string().trim().min(8).max(255),
 });
@@ -13,7 +13,7 @@ export type LoginType = {
   password: string,
 }
 
-export const UserSchema = z.object({
+export const UserValidator = z.object({
   name: z.string().trim().min(4).max(255),
   email: z.string().trim().email(),
   password: z.string().trim().min(8).max(255),
@@ -29,7 +29,6 @@ export const schema = new Schema(
   { timestamps: true, strict: true, strictQuery: true, versionKey: false }
 );
 
-export type UserType = InferSchemaType<typeof schema>;
+export type UserSchema = InferSchemaType<typeof schema>;
 
-
-export const users = model<UserType>("User", schema, "user");
+export const users = model<UserSchema>("User", schema, "user");

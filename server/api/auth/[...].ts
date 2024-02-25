@@ -3,9 +3,7 @@ import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-import { users, LoginSchema, UserType } from '@/server/models'
-import { Validator } from "#nuxt-server-utils";
-import bcrypt from "bcrypt";
+import { users } from '@/server/models'
 
 export default NuxtAuthHandler({
   secret: 'my-superb-secret',

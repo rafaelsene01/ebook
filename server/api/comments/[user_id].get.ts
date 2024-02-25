@@ -1,21 +1,16 @@
-import { users, UserValidator, UserSchema } from "@/server/models";
-import { Validator, } from "#nuxt-server-utils";
+import { comments } from "@/server/models";
 import { ErrorMessage } from "@/server/shared";
-import bcrypt from "bcrypt";
+import { getServerSession } from '#auth'
 
 export default defineEventHandler(async (event) => {
   try {
-    const { email, password, name } = await readBody<UserSchema>(event);
-    Validator.validateSchema(UserValidator, { email, password, name });
+    const session = await <any>getServerSession(event)
+    if (!session) throw new Error("INVALID_TOKEN");
 
-    const userData = await users.findOne({
-      email,
-    });
-    if (userData) {
-      throw new Error("USER_EXISTS");
-    } else {
-      await users.create({ email, password: await bcrypt.hash(password, 10), name });
-    }
+    const user_id = getRouterParam(event, 'user_id')
+    const texts = await comments.find({ user_id }).select('text')
+    return texts.map(i => i.text)
+
   } catch (err) {
     const { cause }: any = err
     if (cause) {
