@@ -1,6 +1,4 @@
 <script setup lang="ts">
-definePageMeta({ auth: false });
-
 const { status, signOut } = useAuth();
 
 const loggedIn = computed(() => status.value === "authenticated");

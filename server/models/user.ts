@@ -19,7 +19,7 @@ export const UserValidator = z.object({
   password: z.string().trim().min(8).max(255),
 });
 
-export const schema = new Schema(
+const schema = new Schema(
   {
     _id: { type: String, default: () => uuidv4() },
     email: { type: String, unique: true },

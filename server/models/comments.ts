@@ -11,7 +11,7 @@ export type CommentType = {
   text: string,
 }
 
-export const schema = new Schema(
+const schema = new Schema(
   {
     _id: { type: String, default: () => uuidv4() },
     user_id: String,
